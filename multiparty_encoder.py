@@ -3,11 +3,11 @@ import json
 from requests_toolbelt import MultipartEncoder
 
 # 设置请求地址
-url = "云小微申请的AppKey"
+url = "https://gw.tvs.qq.com/ai/asr"
 
 # 设置请求头
 headers = {
-    "AppKey": "云小微申请的AppKey",
+    "AppKey": "fa344ca04d8611eb93763d03417560a2",
     'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
 }
 
@@ -43,7 +43,7 @@ payload = json.dumps({
 
 data = MultipartEncoder(
     fields={
-        "audio": ("filename", open(r"语音文件", "rb"), "audio/mp3"),
+        "audio": ("filename", open(r"C:\Users\29965\Desktop\音频文件\音频文件\答案3.wav", "rb"), "audio/mp3"),
         "metadata": ("metadata", payload, "application/json;charset=utf-8")
     }, boundary="----WebKitFormBoundary7MA4YWxkTrZu0gW"
 )
