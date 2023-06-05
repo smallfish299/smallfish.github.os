@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>统计图表</title>
+</head>
+<body>
+<h1>价格统计</h1>
+<canvas id="price-chart"></canvas>
+
+<h1>地区统计</h1>
+<canvas id="region-chart"></canvas>
+
+<h1>类型统计</h1>
+<canvas id="type-chart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var data = {{ data|tojson }};
+
+    // 价格统计
+    var priceData = [];
+    for (var i = 0; i < data.length; i++) {
+        priceData.push(data[i][1]);
+    }
+    var priceChart = new Chart(document.getElementById('price-chart'), {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: '价格',
+                data: priceData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    // 地区统计
+    var regionData = {
+        '北京': 0,
+        '天津': 0,
+        '广东': 0,
+        '安徽': 0,
+        '其他': 0
+    };
+    for (var i = 0; i < data.length; i++) {
+        var region = data[i][3];
+        if (region.indexOf('北京') !== -1) {
+            regionData['北京']++;
+        } else if (region.indexOf('天津') !== -1) {
+            regionData['天津']++;
+        } else if (region.indexOf('广东') !== -1) {
+            regionData['广东']++;
+        } else if (region.indexOf('安徽') !== -1) {
+            regionData['安徽']++;
+        } else {
+            regionData['其他']++;
+        }
+    }
+    var regionChart = new Chart(document.getElementById('region-chart'), {
+        type: 'pie',
+        data: {
+            labels: Object.keys(regionData),
+            datasets: [{
+                data: Object.values(regionData),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // 类型统计
+    var typeData = {
+        '文学作品': 0,
+        '美学作品': 0,
+        '艺术作品': 0,
+        '其他': 0
+    };
+    for (var i = 0; i < data.length; i++) {
+        var type = data[i][2];
+        if (type.indexOf('11') === 0) {
+            typeData['文学作品']++;
+        } else if (type.indexOf('12') === 0) {
+            typeData['美学作品']++;
+        } else if (type.indexOf('71') === 0) {
+            typeData['艺术作品']++;
+        } else {
+            typeData['其他']++;
+        }
+    }
+    var typeChart = new Chart(document.getElementById('type-chart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(typeData),
+            datasets: [{
+                data: Object.values(typeData),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+</body>
+</html>
